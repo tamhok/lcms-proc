@@ -8,6 +8,7 @@ load.file  <- function(filename) {
 	headers = as.character(data[1,])
 	#Figure out which columns are what acc = grep("Acc", headers)
 	samples = grep("RZA|SLG", headers)
+	acc = grep("Acc", headers)
 	
 	pdata = data[-1, c(acc, samples)]
 	colnames(pdata) = data[1, c(acc, samples)]
@@ -30,7 +31,9 @@ load.files  <- function() {
 	filebase = "~/Dropbox/MELTON CELL MANUSCRIPT DATA/FIles to plot for heat map/"
 	files = list.files(filebase, pattern = "csv", full.names = TRUE)
 	datas = lapply(files, load.file)  
-	return(Reduce(rbind, datas))
+	
+	alldatas = Reduce(rbind, datas)
+	alldatas$value = log(as.numeric(alldatas$value))
 }
 
 lcms.test  <-  function() {
